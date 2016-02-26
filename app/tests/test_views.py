@@ -236,16 +236,12 @@ class MultiStepRegistrationTests(ViewTestCase):
 class ActivityFeedTests(ViewTestCase):
     def test_activity_link_present(self):
         self.login()
-        user = User.query_in_deployment()\
-                 .filter(User.email == 'test@example.org').one()
-        user.first_name = 'John'
-        user.last_name = 'Doe'
         self.client.post('/activity', data=dict(
             message=u"hello there. Please check out, http://freecodecamp.com"
         ), follow_redirects=True)
         res = self.client.get('/activity')
         assert 'href="http://freecodecamp.com"' in res.data
-        
+
     def test_get_is_ok(self):
         self.assert200(self.client.get('/activity'))
 
